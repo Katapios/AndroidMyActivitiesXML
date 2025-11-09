@@ -7,18 +7,20 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class FrameActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.frame_layout);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(this);
-        bottomNavigationView.setSelectedItemId(R.id.nav_main);
+        if (bottomNavigationView != null) {
+            bottomNavigationView.setOnNavigationItemSelectedListener(this);
+            bottomNavigationView.setSelectedItemId(R.id.nav_frame);
+        }
     }
 
     @Override
@@ -26,7 +28,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         int itemId = item.getItemId();
         
         if (itemId == R.id.nav_main) {
-            // Уже на этой странице
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
             return true;
         } else if (itemId == R.id.nav_layout) {
             Intent intent = new Intent(this, LayoutActivity.class);
@@ -34,9 +38,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             finish();
             return true;
         } else if (itemId == R.id.nav_frame) {
-            Intent intent = new Intent(this, FrameActivity.class);
-            startActivity(intent);
-            finish();
+            // Уже на этой странице
             return true;
         } else if (itemId == R.id.nav_table) {
             Intent intent = new Intent(this, TableActivity.class);
@@ -47,5 +49,4 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         
         return false;
     }
-
 }

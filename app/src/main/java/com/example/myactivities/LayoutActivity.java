@@ -7,18 +7,20 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class LayoutActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.linear_layout);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(this);
-        bottomNavigationView.setSelectedItemId(R.id.nav_main);
+        if (bottomNavigationView != null) {
+            bottomNavigationView.setOnNavigationItemSelectedListener(this);
+            bottomNavigationView.setSelectedItemId(R.id.nav_layout);
+        }
     }
 
     @Override
@@ -26,12 +28,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         int itemId = item.getItemId();
         
         if (itemId == R.id.nav_main) {
-            // Уже на этой странице
-            return true;
-        } else if (itemId == R.id.nav_layout) {
-            Intent intent = new Intent(this, LayoutActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
+            return true;
+        } else if (itemId == R.id.nav_layout) {
+            // Уже на этой странице
             return true;
         } else if (itemId == R.id.nav_frame) {
             Intent intent = new Intent(this, FrameActivity.class);
@@ -47,5 +49,5 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         
         return false;
     }
-
 }
+
