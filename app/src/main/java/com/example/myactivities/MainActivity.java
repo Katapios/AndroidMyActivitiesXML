@@ -22,7 +22,7 @@ public class MainActivity extends BaseNavigationActivity {
 
         Button btnOpenSecond = findViewById(R.id.btn_open_second);
         btnOpenSecond.setOnClickListener(v -> {
-            // Создание Intent для перехода к ThirdActivity
+            // Переход к ThirdActivity через Intent
             Intent intent = new Intent(MainActivity.this, ThirdActivity.class);
             intent.putExtra("user_name", "Иван Иванов");
             intent.putExtra("user_age", 25);
@@ -32,10 +32,8 @@ public class MainActivity extends BaseNavigationActivity {
         Button btnOpenWithResult = findViewById(R.id.btn_open_with_result);
         btnOpenWithResult.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SecondActivity.class);
-            // Передача данных в SecondActivity
             intent.putExtra(EXTRA_USER_NAME, "Иван Иванов");
             intent.putExtra(EXTRA_USER_AGE, 25);
-            // Запуск Activity с ожиданием результата
             startActivityForResult(intent, REQUEST_CODE);
         });
 

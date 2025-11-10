@@ -13,8 +13,17 @@ public class ThirdActivity extends AppCompatActivity {
         setContentView(R.layout.activity_third);
 
         // Получение данных из Intent
-        String userName = getIntent().getStringExtra("user_name");
-        int userAge = getIntent().getIntExtra("user_age", 0);
+        String userName = "Гость";
+        int userAge = 0;
+        
+        if (getIntent() != null) {
+            userName = getIntent().getStringExtra("user_name");
+            userAge = getIntent().getIntExtra("user_age", 0);
+            
+            if (userName == null || userName.isEmpty()) {
+                userName = "Гость";
+            }
+        }
 
         TextView tvInfo = findViewById(R.id.tv_info);
         tvInfo.setText("Пользователь: " + userName + ", Возраст: " + userAge);

@@ -1,15 +1,11 @@
 package com.example.myactivities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import androidx.annotation.IdRes;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public abstract class BaseNavigationActivity extends AppCompatActivity 
-        implements BottomNavigationView.OnNavigationItemSelectedListener {
+public abstract class BaseNavigationActivity extends AppCompatActivity {
 
     protected BottomNavigationView bottomNavigationView;
 
@@ -18,33 +14,43 @@ public abstract class BaseNavigationActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResId());
 
+        // Настройка BottomNavigationView
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         if (bottomNavigationView != null) {
-            bottomNavigationView.setOnNavigationItemSelectedListener(this);
-            bottomNavigationView.setSelectedItemId(getSelectedNavigationItemId());
+            setupBottomNavigation();
         }
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int itemId = item.getItemId();
-        
-        // Если уже на этой странице, ничего не делаем
-        if (itemId == getSelectedNavigationItemId()) {
-            return true;
-        }
-        
-        // Определяем класс активити для перехода
-        Class<? extends AppCompatActivity> targetActivity = getActivityClassForNavigationItem(itemId);
-        
-        if (targetActivity != null) {
-            Intent intent = new Intent(this, targetActivity);
-            startActivity(intent);
-            finish();
-            return true;
-        }
-        
-        return false;
+    /**
+     * Настройка навигации через BottomNavigationView
+     */
+    private void setupBottomNavigation() {
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == getSelectedNavigationItemId()) {
+                return true;
+            }
+            
+            // Используем Intent для навигации
+            android.content.Intent intent = null;
+            if (itemId == R.id.nav_main) {
+                intent = new android.content.Intent(this, MainActivity.class);
+            } else if (itemId == R.id.nav_layout) {
+                intent = new android.content.Intent(this, LayoutActivity.class);
+            } else if (itemId == R.id.nav_frame) {
+                intent = new android.content.Intent(this, FrameActivity.class);
+            } else if (itemId == R.id.nav_table) {
+                intent = new android.content.Intent(this, TableActivity.class);
+            }
+            
+            if (intent != null) {
+                startActivity(intent);
+                finish();
+                return true;
+            }
+            return false;
+        });
+        bottomNavigationView.setSelectedItemId(getSelectedNavigationItemId());
     }
 
     /**
@@ -57,21 +63,5 @@ public abstract class BaseNavigationActivity extends AppCompatActivity
      */
     @IdRes
     protected abstract int getSelectedNavigationItemId();
-
-    /**
-     * Возвращает класс активити для перехода по выбранному пункту меню
-     */
-    private Class<? extends AppCompatActivity> getActivityClassForNavigationItem(int itemId) {
-        if (itemId == R.id.nav_main) {
-            return MainActivity.class;
-        } else if (itemId == R.id.nav_layout) {
-            return LayoutActivity.class;
-        } else if (itemId == R.id.nav_frame) {
-            return FrameActivity.class;
-        } else if (itemId == R.id.nav_table) {
-            return TableActivity.class;
-        }
-        return null;
-    }
 }
 
