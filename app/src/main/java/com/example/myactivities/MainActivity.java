@@ -51,7 +51,7 @@ public class MainActivity extends BaseNavigationActivity {
         
         navController = Navigation.findNavController(navHostView);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.mainFragment, R.id.layoutFragment, R.id.frameFragment, R.id.tableFragment)
+                R.id.mainFragment, R.id.layoutFragment, R.id.frameFragment, R.id.tableFragment, R.id.tabFragment)
                 .setDrawerLayout(drawerLayout)
                 .build();
         

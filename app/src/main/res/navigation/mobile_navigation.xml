@@ -30,6 +30,10 @@
         <action
             android:id="@+id/action_mainFragment_to_tableFragment"
             app:destination="@id/tableFragment" />
+
+        <action
+            android:id="@+id/action_mainFragment_to_tabFragment"
+            app:destination="@id/tabFragment" />
     </fragment>
 
     <fragment
@@ -99,6 +103,12 @@
             android:id="@+id/action_tableFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/tabFragment"
+        android:name="com.example.myactivities.TabFragment"
+        android:label="Tab Navigation"
+        tools:layout="@layout/fragment_tab" />
 
 </navigation>
 

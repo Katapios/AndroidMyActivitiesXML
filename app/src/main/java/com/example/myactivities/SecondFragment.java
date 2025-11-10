@@ -98,12 +98,12 @@ public class SecondFragment extends Fragment {
             String ageText = etUserAge.getText().toString().trim();
             
             int age = 25;
-            try {
-                if (!TextUtils.isEmpty(ageText)) {
+            if (!TextUtils.isEmpty(ageText)) {
+                try {
                     age = Integer.parseInt(ageText);
+                } catch (NumberFormatException e) {
+                    // Keep default age
                 }
-            } catch (NumberFormatException e) {
-                age = 25;
             }
             
             Bundle thirdArgs = new Bundle();

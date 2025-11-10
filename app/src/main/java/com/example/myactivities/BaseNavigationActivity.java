@@ -39,7 +39,6 @@ public abstract class BaseNavigationActivity extends AppCompatActivity {
         
         setupNavigation();
         
-        // Setup drawer navigation after setupNavigation so MainActivity can override listener
         if (drawerLayout != null && navigationView != null && toolbar != null) {
             if (!(this instanceof MainActivity)) {
                 setupDrawerNavigation();
@@ -73,7 +72,6 @@ public abstract class BaseNavigationActivity extends AppCompatActivity {
     private boolean onDrawerNavigationItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         
-        // Handle SecondActivity and ThirdActivity navigation
         android.content.Intent intent = null;
         if (itemId == R.id.nav_drawer_second) {
             intent = new android.content.Intent(this, SecondActivity.class);
@@ -90,13 +88,11 @@ public abstract class BaseNavigationActivity extends AppCompatActivity {
             return true;
         }
         
-        // For MainActivity, let NavigationUI handle fragment navigation
         if (this instanceof MainActivity) {
             drawerLayout.closeDrawers();
             return false;
         }
         
-        // For other activities
         if (itemId == getSelectedDrawerMenuItemId()) {
             drawerLayout.closeDrawers();
             return true;
@@ -106,7 +102,6 @@ public abstract class BaseNavigationActivity extends AppCompatActivity {
     }
 
     private void setupBottomNavigation() {
-        // Navigation will be handled by NavController in MainActivity
         bottomNavigationView.setSelectedItemId(getSelectedNavigationItemId());
     }
 
@@ -117,9 +112,7 @@ public abstract class BaseNavigationActivity extends AppCompatActivity {
 
     @IdRes
     protected int getSelectedDrawerMenuItemId() {
-        int bottomNavId = getSelectedNavigationItemId();
-        // Now drawer menu items have same IDs as fragments
-        return bottomNavId;
+        return getSelectedNavigationItemId();
     }
 
     protected android.content.Intent createThirdActivityIntent(String userName, int userAge) {

@@ -14,15 +14,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LayoutActivity"
-            android:exported="false" />
-        <activity
-            android:name=".FrameActivity"
-            android:exported="false" />
-        <activity
-            android:name=".TableActivity"
-            android:exported="false" />
-        <activity
             android:name=".SecondActivity"
             android:exported="false" />
         <activity

@@ -43,6 +43,11 @@ public class MainFragment extends Fragment {
             Navigation.findNavController(v).navigate(R.id.action_mainFragment_to_secondFragment, args);
         });
 
+        Button btnOpenTabs = view.findViewById(R.id.btn_open_tabs);
+        btnOpenTabs.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_mainFragment_to_tabFragment);
+        });
+
         tvResult = view.findViewById(R.id.tv_result);
     }
     
