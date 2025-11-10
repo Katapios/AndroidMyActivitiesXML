@@ -2,16 +2,15 @@ package com.example.myactivities;
 
 import androidx.annotation.IdRes;
 
-public class TableActivity extends BaseNavigationActivity {
-
+public class GridActivity extends BaseNavigationActivity{
     @Override
     protected int getLayoutResId() {
-        return R.layout.table_layout;
+        return R.layout.frame_layout;
     }
 
     @Override
     @IdRes
     protected int getSelectedNavigationItemId() {
-        return R.id.nav_table;
+        return R.id.nav_frame;
     }
 }
