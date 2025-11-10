@@ -12,6 +12,6 @@ public class FrameActivity extends BaseNavigationActivity {
     @Override
     @IdRes
     protected int getSelectedNavigationItemId() {
-        return R.id.nav_frame;
+        return R.id.frameFragment;
     }
 }

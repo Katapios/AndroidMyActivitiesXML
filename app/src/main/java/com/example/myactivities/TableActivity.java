@@ -12,6 +12,6 @@ public class TableActivity extends BaseNavigationActivity {
     @Override
     @IdRes
     protected int getSelectedNavigationItemId() {
-        return R.id.nav_table;
+        return R.id.tableFragment;
     }
 }

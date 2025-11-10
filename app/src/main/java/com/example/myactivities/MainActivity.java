@@ -1,38 +1,23 @@
 package com.example.myactivities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.IdRes;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends BaseNavigationActivity {
 
-    private static final int REQUEST_CODE = 1;
-    
-    private TextView tvResult;
+    private NavController navController;
+    private ResultViewModel resultViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Button btnOpenSecond = findViewById(R.id.btn_open_second);
-        btnOpenSecond.setOnClickListener(v -> {
-            Intent intent = createThirdActivityIntent("Иван Иванов", 25);
-            startActivity(intent);
-        });
-
-        Button btnOpenWithResult = findViewById(R.id.btn_open_with_result);
-        btnOpenWithResult.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, SecondActivity.class);
-            intent.putExtra(IntentConstants.EXTRA_USER_NAME, "Иван Иванов");
-            intent.putExtra(IntentConstants.EXTRA_USER_AGE, 25);
-            startActivityForResult(intent, REQUEST_CODE);
-        });
-
-        tvResult = findViewById(R.id.tv_result);
+        resultViewModel = new ViewModelProvider(this).get(ResultViewModel.class);
     }
 
     @Override
@@ -43,35 +28,62 @@ public class MainActivity extends BaseNavigationActivity {
     @Override
     @IdRes
     protected int getSelectedNavigationItemId() {
-        return R.id.nav_main;
+        return R.id.mainFragment;
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    protected void setupNavigation() {
+        if (drawerLayout != null && toolbar != null) {
+            androidx.appcompat.app.ActionBarDrawerToggle drawerToggle = 
+                    new androidx.appcompat.app.ActionBarDrawerToggle(
+                            this, drawerLayout, toolbar,
+                            R.string.navigation_drawer_open,
+                            R.string.navigation_drawer_close
+                    );
+            drawerLayout.addDrawerListener(drawerToggle);
+            drawerToggle.syncState();
+        }
         
-        if (requestCode != REQUEST_CODE || tvResult == null) {
+        android.view.View navHostView = findViewById(R.id.nav_host_fragment);
+        if (navHostView == null) {
             return;
         }
         
-        if (resultCode == RESULT_OK && data != null) {
-            String resultName = data.getStringExtra(IntentConstants.RESULT_NAME);
-            int resultAge = data.getIntExtra(IntentConstants.RESULT_AGE, 0);
-            String resultMessage = data.getStringExtra(IntentConstants.RESULT_MESSAGE);
-            
-            if (resultName != null && resultAge > 0) {
-                String displayText = String.format("Получены данные:\nИмя: %s\nВозраст: %d", resultName, resultAge);
-                if (resultMessage != null && !resultMessage.isEmpty()) {
-                    displayText += "\nСообщение: " + resultMessage;
-                }
-                tvResult.setText(displayText);
-                Toast.makeText(this, "Данные успешно получены!", Toast.LENGTH_SHORT).show();
-            } else {
-                tvResult.setText(resultMessage != null ? "Результат: " + resultMessage : "Данные отсутствуют");
-            }
-        } else if (resultCode == RESULT_CANCELED) {
-            tvResult.setText("Операция отменена");
-            Toast.makeText(this, "Операция отменена", Toast.LENGTH_SHORT).show();
+        navController = Navigation.findNavController(navHostView);
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.mainFragment, R.id.layoutFragment, R.id.frameFragment, R.id.tableFragment)
+                .setDrawerLayout(drawerLayout)
+                .build();
+        
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        
+        if (bottomNavigationView != null) {
+            NavigationUI.setupWithNavController(bottomNavigationView, navController);
         }
+        
+        if (navigationView != null) {
+            navigationView.setNavigationItemSelectedListener(item -> {
+                int itemId = item.getItemId();
+                if (itemId == R.id.nav_drawer_second) {
+                    startActivity(new android.content.Intent(this, SecondActivity.class));
+                    drawerLayout.closeDrawers();
+                    return true;
+                } else if (itemId == R.id.nav_drawer_third) {
+                    startActivity(createThirdActivityIntent("Из Drawer Menu", 30));
+                    drawerLayout.closeDrawers();
+                    return true;
+                }
+                return NavigationUI.onNavDestinationSelected(item, navController);
+            });
+            
+            android.view.MenuItem menuItem = navigationView.getMenu().findItem(R.id.mainFragment);
+            if (menuItem != null) {
+                menuItem.setChecked(true);
+            }
+        }
+    }
+    
+    public ResultViewModel getResultViewModel() {
+        return resultViewModel;
     }
 }

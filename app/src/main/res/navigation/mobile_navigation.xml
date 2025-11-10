@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.myactivities.MainFragment"
+        android:label="Main Fragment"
+        tools:layout="@layout/fragment_main">
+
+        <action
+            android:id="@+id/action_mainFragment_to_secondFragment"
+            app:destination="@id/secondFragment" />
+
+        <action
+            android:id="@+id/action_mainFragment_to_thirdFragment"
+            app:destination="@id/thirdFragment" />
+
+        <action
+            android:id="@+id/action_mainFragment_to_layoutFragment"
+            app:destination="@id/layoutFragment" />
+
+        <action
+            android:id="@+id/action_mainFragment_to_frameFragment"
+            app:destination="@id/frameFragment" />
+
+        <action
+            android:id="@+id/action_mainFragment_to_tableFragment"
+            app:destination="@id/tableFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/secondFragment"
+        android:name="com.example.myactivities.SecondFragment"
+        android:label="Second Fragment"
+        tools:layout="@layout/fragment_second">
+
+        <argument
+            android:name="user_name"
+            app:argType="string"
+            android:defaultValue="" />
+
+        <argument
+            android:name="user_age"
+            app:argType="integer"
+            android:defaultValue="0" />
+
+        <action
+            android:id="@+id/action_secondFragment_to_thirdFragment"
+            app:destination="@id/thirdFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/thirdFragment"
+        android:name="com.example.myactivities.ThirdFragment"
+        android:label="Third Fragment"
+        tools:layout="@layout/fragment_third">
+
+        <argument
+            android:name="user_name"
+            app:argType="string"
+            android:defaultValue="Гость" />
+
+        <argument
+            android:name="user_age"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/layoutFragment"
+        android:name="com.example.myactivities.LayoutFragment"
+        android:label="Linear Layout Fragment"
+        tools:layout="@layout/fragment_linear_layout">
+        <action
+            android:id="@+id/action_layoutFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/frameFragment"
+        android:name="com.example.myactivities.FrameFragment"
+        android:label="Frame Layout Fragment"
+        tools:layout="@layout/fragment_frame_layout">
+        <action
+            android:id="@+id/action_frameFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/tableFragment"
+        android:name="com.example.myactivities.TableFragment"
+        android:label="Table Layout Fragment"
+        tools:layout="@layout/fragment_table_layout">
+        <action
+            android:id="@+id/action_tableFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+
+</navigation>
+

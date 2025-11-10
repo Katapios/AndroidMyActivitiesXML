@@ -24,7 +24,6 @@ public abstract class BaseNavigationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResId());
 
-        // Настройка Toolbar
         toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -32,14 +31,24 @@ public abstract class BaseNavigationActivity extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
-        if (drawerLayout != null && navigationView != null && toolbar != null) {
-            setupDrawerNavigation();
-        }
-
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+        
         if (bottomNavigationView != null) {
             setupBottomNavigation();
         }
+        
+        setupNavigation();
+        
+        // Setup drawer navigation after setupNavigation so MainActivity can override listener
+        if (drawerLayout != null && navigationView != null && toolbar != null) {
+            if (!(this instanceof MainActivity)) {
+                setupDrawerNavigation();
+            }
+        }
+    }
+    
+    protected void setupNavigation() {
+        // Override in subclasses if needed
     }
 
     private void setupDrawerNavigation() {
@@ -64,21 +73,9 @@ public abstract class BaseNavigationActivity extends AppCompatActivity {
     private boolean onDrawerNavigationItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         
-        if (itemId == getSelectedDrawerMenuItemId()) {
-            drawerLayout.closeDrawers();
-            return true;
-        }
-        
+        // Handle SecondActivity and ThirdActivity navigation
         android.content.Intent intent = null;
-        if (itemId == R.id.nav_drawer_main) {
-            intent = new android.content.Intent(this, MainActivity.class);
-        } else if (itemId == R.id.nav_drawer_layout) {
-            intent = new android.content.Intent(this, LayoutActivity.class);
-        } else if (itemId == R.id.nav_drawer_frame) {
-            intent = new android.content.Intent(this, FrameActivity.class);
-        } else if (itemId == R.id.nav_drawer_table) {
-            intent = new android.content.Intent(this, TableActivity.class);
-        } else if (itemId == R.id.nav_drawer_second) {
+        if (itemId == R.id.nav_drawer_second) {
             intent = new android.content.Intent(this, SecondActivity.class);
         } else if (itemId == R.id.nav_drawer_third) {
             intent = createThirdActivityIntent("Из Drawer Menu", 30);
@@ -87,7 +84,21 @@ public abstract class BaseNavigationActivity extends AppCompatActivity {
         if (intent != null) {
             startActivity(intent);
             drawerLayout.closeDrawers();
-            finish();
+            if (!(this instanceof MainActivity)) {
+                finish();
+            }
+            return true;
+        }
+        
+        // For MainActivity, let NavigationUI handle fragment navigation
+        if (this instanceof MainActivity) {
+            drawerLayout.closeDrawers();
+            return false;
+        }
+        
+        // For other activities
+        if (itemId == getSelectedDrawerMenuItemId()) {
+            drawerLayout.closeDrawers();
             return true;
         }
         
@@ -95,30 +106,7 @@ public abstract class BaseNavigationActivity extends AppCompatActivity {
     }
 
     private void setupBottomNavigation() {
-        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == getSelectedNavigationItemId()) {
-                return true;
-            }
-            
-            android.content.Intent intent = null;
-            if (itemId == R.id.nav_main) {
-                intent = new android.content.Intent(this, MainActivity.class);
-            } else if (itemId == R.id.nav_layout) {
-                intent = new android.content.Intent(this, LayoutActivity.class);
-            } else if (itemId == R.id.nav_frame) {
-                intent = new android.content.Intent(this, FrameActivity.class);
-            } else if (itemId == R.id.nav_table) {
-                intent = new android.content.Intent(this, TableActivity.class);
-            }
-            
-            if (intent != null) {
-                startActivity(intent);
-                finish();
-                return true;
-            }
-            return false;
-        });
+        // Navigation will be handled by NavController in MainActivity
         bottomNavigationView.setSelectedItemId(getSelectedNavigationItemId());
     }
 
@@ -130,16 +118,8 @@ public abstract class BaseNavigationActivity extends AppCompatActivity {
     @IdRes
     protected int getSelectedDrawerMenuItemId() {
         int bottomNavId = getSelectedNavigationItemId();
-        if (bottomNavId == R.id.nav_main) {
-            return R.id.nav_drawer_main;
-        } else if (bottomNavId == R.id.nav_layout) {
-            return R.id.nav_drawer_layout;
-        } else if (bottomNavId == R.id.nav_frame) {
-            return R.id.nav_drawer_frame;
-        } else if (bottomNavId == R.id.nav_table) {
-            return R.id.nav_drawer_table;
-        }
-        return R.id.nav_drawer_main;
+        // Now drawer menu items have same IDs as fragments
+        return bottomNavId;
     }
 
     protected android.content.Intent createThirdActivityIntent(String userName, int userAge) {

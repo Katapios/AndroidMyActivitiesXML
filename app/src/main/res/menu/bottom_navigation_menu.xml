@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/nav_main"
+        android:id="@+id/mainFragment"
         android:icon="@android:drawable/ic_menu_view"
         android:title="Main" />
     
     <item
-        android:id="@+id/nav_layout"
+        android:id="@+id/layoutFragment"
         android:icon="@android:drawable/ic_menu_edit"
         android:title="Layout" />
     
     <item
-        android:id="@+id/nav_frame"
+        android:id="@+id/frameFragment"
         android:icon="@android:drawable/ic_menu_crop"
         android:title="Frame" />
 
     <item
-        android:id="@+id/nav_table"
+        android:id="@+id/tableFragment"
         android:icon="@android:drawable/ic_menu_today"
         android:title="Table" />
 </menu>

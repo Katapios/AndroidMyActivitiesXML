@@ -12,7 +12,7 @@ public class LayoutActivity extends BaseNavigationActivity {
     @Override
     @IdRes
     protected int getSelectedNavigationItemId() {
-        return R.id.nav_layout;
+        return R.id.layoutFragment;
     }
 }
 

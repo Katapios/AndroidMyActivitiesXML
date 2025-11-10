@@ -2,22 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_drawer_main"
+            android:id="@+id/mainFragment"
             android:icon="@android:drawable/ic_menu_view"
             android:title="Главная" />
         
         <item
-            android:id="@+id/nav_drawer_layout"
+            android:id="@+id/layoutFragment"
             android:icon="@android:drawable/ic_menu_edit"
             android:title="Linear Layout" />
         
         <item
-            android:id="@+id/nav_drawer_frame"
+            android:id="@+id/frameFragment"
             android:icon="@android:drawable/ic_menu_crop"
             android:title="Frame Layout" />
 
         <item
-            android:id="@+id/nav_drawer_table"
+            android:id="@+id/tableFragment"
             android:icon="@android:drawable/ic_menu_today"
             android:title="Table Layout" />
     </group>
