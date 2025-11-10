@@ -1,5 +1,6 @@
 package com.example.myactivities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,14 +13,12 @@ public class ThirdActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_third);
 
-        // Получение данных из Intent
         String userName = "Гость";
         int userAge = 0;
         
         if (getIntent() != null) {
-            userName = getIntent().getStringExtra("user_name");
-            userAge = getIntent().getIntExtra("user_age", 0);
-            
+            userName = getIntent().getStringExtra(IntentConstants.EXTRA_USER_NAME);
+            userAge = getIntent().getIntExtra(IntentConstants.EXTRA_USER_AGE, 0);
             if (userName == null || userName.isEmpty()) {
                 userName = "Гость";
             }
@@ -30,7 +29,15 @@ public class ThirdActivity extends AppCompatActivity {
 
         Button btnBack = findViewById(R.id.btn_back);
         btnBack.setOnClickListener(v -> {
-            finish(); // Просто закрываем Activity
+            if (getCallingActivity() != null) {
+                finish();
+            } else {
+                // Если открыто из drawer, возвращаемся в SecondActivity
+                Intent secondIntent = new Intent(ThirdActivity.this, SecondActivity.class);
+                secondIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(secondIntent);
+                finish();
+            }
         });
     }
 }

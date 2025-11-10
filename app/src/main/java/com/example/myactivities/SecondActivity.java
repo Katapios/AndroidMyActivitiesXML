@@ -24,11 +24,10 @@ public class SecondActivity extends AppCompatActivity {
         etUserAge = findViewById(R.id.et_user_age);
         etMessage = findViewById(R.id.et_message);
 
-        // Получение данных из Intent
         Intent intent = getIntent();
         if (intent != null) {
-            String userName = intent.getStringExtra("user_name");
-            int userAge = intent.getIntExtra("user_age", 0);
+            String userName = intent.getStringExtra(IntentConstants.EXTRA_USER_NAME);
+            int userAge = intent.getIntExtra(IntentConstants.EXTRA_USER_AGE, 0);
             
             if (userName != null && !userName.isEmpty()) {
                 etUserName.setText(userName);
@@ -40,7 +39,6 @@ public class SecondActivity extends AppCompatActivity {
 
         Button btnClose = findViewById(R.id.btn_close);
         btnClose.setOnClickListener(v -> {
-            // Валидация данных
             String name = etUserName.getText().toString().trim();
             String ageText = etUserAge.getText().toString().trim();
             
@@ -61,19 +59,25 @@ public class SecondActivity extends AppCompatActivity {
                     return;
                 }
                 
-                // Возврат результата в MainActivity
-                Intent resultIntent = new Intent();
-                resultIntent.putExtra("result_name", name);
-                resultIntent.putExtra("result_age", age);
-                
-                String message = etMessage.getText().toString().trim();
-                if (!TextUtils.isEmpty(message)) {
-                    resultIntent.putExtra("result_message", message);
+                if (getCallingActivity() != null) {
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra(IntentConstants.RESULT_NAME, name);
+                    resultIntent.putExtra(IntentConstants.RESULT_AGE, age);
+                    
+                    String message = etMessage.getText().toString().trim();
+                    if (!TextUtils.isEmpty(message)) {
+                        resultIntent.putExtra(IntentConstants.RESULT_MESSAGE, message);
+                    }
+                    
+                    setResult(RESULT_OK, resultIntent);
+                    finish();
+                } else {
+                    // Если открыто из drawer, возвращаемся на MainActivity
+                    Intent mainIntent = new Intent(SecondActivity.this, MainActivity.class);
+                    mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(mainIntent);
+                    finish();
                 }
-                
-                // Устанавливаем результат и закрываем Activity
-                setResult(RESULT_OK, resultIntent);
-                finish(); // Закрытие Activity
             } catch (NumberFormatException e) {
                 Toast.makeText(this, "Возраст должен быть числом", Toast.LENGTH_SHORT).show();
             }
@@ -81,8 +85,16 @@ public class SecondActivity extends AppCompatActivity {
 
         Button btnCancel = findViewById(R.id.btn_cancel);
         btnCancel.setOnClickListener(v -> {
-            setResult(RESULT_CANCELED);
-            finish();
+            if (getCallingActivity() != null) {
+                setResult(RESULT_CANCELED);
+                finish();
+            } else {
+                // Если открыто из drawer, возвращаемся на MainActivity
+                Intent mainIntent = new Intent(SecondActivity.this, MainActivity.class);
+                mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(mainIntent);
+                finish();
+            }
         });
 
         Button btnOpenThird = findViewById(R.id.btn_open_third);
@@ -90,22 +102,18 @@ public class SecondActivity extends AppCompatActivity {
             String name = etUserName.getText().toString().trim();
             String ageText = etUserAge.getText().toString().trim();
             
-            Intent intentToThird = new Intent(SecondActivity.this, ThirdActivity.class);
-            if (!TextUtils.isEmpty(name)) {
-                intentToThird.putExtra("user_name", name);
-            } else {
-                intentToThird.putExtra("user_name", "Иван Иванов");
-            }
-            
+            int age = 25;
             if (!TextUtils.isEmpty(ageText)) {
                 try {
-                    intentToThird.putExtra("user_age", Integer.parseInt(ageText));
+                    age = Integer.parseInt(ageText);
                 } catch (NumberFormatException e) {
-                    intentToThird.putExtra("user_age", 25);
+                    age = 25;
                 }
-            } else {
-                intentToThird.putExtra("user_age", 25);
             }
+            
+            Intent intentToThird = new Intent(SecondActivity.this, ThirdActivity.class);
+            intentToThird.putExtra(IntentConstants.EXTRA_USER_NAME, TextUtils.isEmpty(name) ? "Иван Иванов" : name);
+            intentToThird.putExtra(IntentConstants.EXTRA_USER_AGE, age);
             startActivity(intentToThird);
         });
     }

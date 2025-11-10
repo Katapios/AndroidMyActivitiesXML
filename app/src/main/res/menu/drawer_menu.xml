@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_drawer_main"
+            android:icon="@android:drawable/ic_menu_view"
+            android:title="Главная" />
+        
+        <item
+            android:id="@+id/nav_drawer_layout"
+            android:icon="@android:drawable/ic_menu_edit"
+            android:title="Linear Layout" />
+        
+        <item
+            android:id="@+id/nav_drawer_frame"
+            android:icon="@android:drawable/ic_menu_crop"
+            android:title="Frame Layout" />
+
+        <item
+            android:id="@+id/nav_drawer_table"
+            android:icon="@android:drawable/ic_menu_today"
+            android:title="Table Layout" />
+    </group>
+    
+    <item android:title="Дополнительно">
+        <menu>
+            <item
+                android:id="@+id/nav_drawer_second"
+                android:icon="@android:drawable/ic_menu_agenda"
+                android:title="Second Activity" />
+            
+            <item
+                android:id="@+id/nav_drawer_third"
+                android:icon="@android:drawable/ic_menu_info_details"
+                android:title="Third Activity" />
+        </menu>
+    </item>
+</menu>
+
