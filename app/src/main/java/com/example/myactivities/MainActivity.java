@@ -13,6 +13,7 @@ public class MainActivity extends BaseNavigationActivity {
     private static final int REQUEST_CODE = 1;
     private static final String EXTRA_USER_NAME = "user_name";
     private static final String EXTRA_USER_AGE = "user_age";
+    private static final String EXTRA_MESSAGE = "message";
     
     private TextView tvResult;
 
@@ -26,6 +27,7 @@ public class MainActivity extends BaseNavigationActivity {
             Intent intent = new Intent(MainActivity.this, ThirdActivity.class);
             intent.putExtra("user_name", "Иван Иванов");
             intent.putExtra("user_age", 25);
+            intent.putExtra("message", "Привет");
             startActivity(intent);
         });
 
@@ -35,6 +37,7 @@ public class MainActivity extends BaseNavigationActivity {
             // Передача данных в SecondActivity
             intent.putExtra(EXTRA_USER_NAME, "Иван Иванов");
             intent.putExtra(EXTRA_USER_AGE, 25);
+            intent.putExtra(EXTRA_MESSAGE, "Привет");
             // Запуск Activity с ожиданием результата
             startActivityForResult(intent, REQUEST_CODE);
         });

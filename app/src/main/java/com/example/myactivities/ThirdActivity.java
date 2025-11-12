@@ -15,9 +15,10 @@ public class ThirdActivity extends AppCompatActivity {
         // Получение данных из Intent
         String userName = getIntent().getStringExtra("user_name");
         int userAge = getIntent().getIntExtra("user_age", 0);
+        String message = getIntent().getStringExtra("message");
 
         TextView tvInfo = findViewById(R.id.tv_info);
-        tvInfo.setText("Пользователь: " + userName + ", Возраст: " + userAge);
+        tvInfo.setText("Пользователь: " + userName + ", Возраст: " + userAge + ", Текст: " + message);
 
         Button btnBack = findViewById(R.id.btn_back);
         btnBack.setOnClickListener(v -> {

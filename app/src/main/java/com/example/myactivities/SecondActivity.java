@@ -29,12 +29,16 @@ public class SecondActivity extends AppCompatActivity {
         if (intent != null) {
             String userName = intent.getStringExtra("user_name");
             int userAge = intent.getIntExtra("user_age", 0);
+            String message = intent.getStringExtra("message");
             
             if (userName != null && !userName.isEmpty()) {
                 etUserName.setText(userName);
             }
             if (userAge > 0) {
                 etUserAge.setText(String.valueOf(userAge));
+            }
+            if (message != null && !message.isEmpty()) {
+                etMessage.setText(message);
             }
         }
 
@@ -89,6 +93,7 @@ public class SecondActivity extends AppCompatActivity {
         btnOpenThird.setOnClickListener(v -> {
             String name = etUserName.getText().toString().trim();
             String ageText = etUserAge.getText().toString().trim();
+            String message = etMessage.getText().toString().trim();
             
             Intent intentToThird = new Intent(SecondActivity.this, ThirdActivity.class);
             if (!TextUtils.isEmpty(name)) {
@@ -106,6 +111,13 @@ public class SecondActivity extends AppCompatActivity {
             } else {
                 intentToThird.putExtra("user_age", 25);
             }
+
+            if (!TextUtils.isEmpty(message)) {
+                intentToThird.putExtra("message", message);
+            } else {
+                intentToThird.putExtra("message", "тестовый текст");
+            }
+
             startActivity(intentToThird);
         });
     }
